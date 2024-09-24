@@ -24,7 +24,7 @@ AppDataSource.initialize()
 
     // Catch 404 and forward to error handler
     app.use((req: Request, res: Response, next: NextFunction) => {
-      const err: HttpError = new Error('Not Found');
+      const err: HttpError = new Error(`Not Found - ${req.originalUrl}`);
       err.status = 404;
       next(err);
     });
