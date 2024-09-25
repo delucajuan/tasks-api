@@ -95,6 +95,21 @@ const changeTaskStatus = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
+const getDaysElapsed = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = parseInt(req.params.id);
+    const daysElapsed = await tasksService.getDaysElapsed(id);
+    if (daysElapsed === null) {
+      const notFoundError: HttpError = new Error('Task not found');
+      notFoundError.status = 404;
+      throw notFoundError;
+    }
+    res.json({ daysElapsed });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createTask,
   getAllTasks,
@@ -103,4 +118,5 @@ export default {
   deleteTask,
   getTasksByStatus,
   changeTaskStatus,
+  getDaysElapsed,
 };

@@ -2,6 +2,7 @@ import { AppDataSource } from '../data-source';
 import { Task } from '../entities/Task';
 import { ChangeTaskStatusInput, CreateTaskInput, UpdateTaskInput } from '../types/types';
 import { TaskStatus } from '../entities/Task';
+import { calculateDaysElapsed } from '../utils/dateUtils';
 
 const taskRepository = AppDataSource.getRepository(Task);
 const standarSelect = {
@@ -40,25 +41,25 @@ const getTaskById = async (id: number) => {
 
 const updateTask = async ({ id, title, description }: UpdateTaskInput) => {
   const task = await taskRepository.findOneBy({ id });
-  if (task) {
-    task.title = title ?? task.title;
-    task.description = description ?? task.description;
-    const updatedTask = await taskRepository.save(task);
-    delete updatedTask.deletedAt;
-    return updatedTask;
+  if (!task) {
+    return null;
   }
-  return null;
+  task.title = title ?? task.title;
+  task.description = description ?? task.description;
+  const updatedTask = await taskRepository.save(task);
+  delete updatedTask.deletedAt;
+  return updatedTask;
 };
-
 const deleteTask = async (id: number) => {
   const task = await taskRepository.findOneBy({ id });
-  if (task) {
-    const result = await taskRepository.softDelete(id);
-    if (result.affected) {
-      return { status: 200, message: 'Task successfully deleted' };
-    }
+  if (!task) {
+    return null;
   }
-  return null;
+  const result = await taskRepository.softDelete(id);
+  if (!result.affected) {
+    return null;
+  }
+  return { status: 200, message: 'Task successfully deleted' };
 };
 
 const getTasksByStatus = async (status: TaskStatus) => {
@@ -70,13 +71,21 @@ const getTasksByStatus = async (status: TaskStatus) => {
 
 const changeTaskStatus = async ({ id, status }: ChangeTaskStatusInput) => {
   const task = await taskRepository.findOneBy({ id });
-  if (task) {
-    task.status = status;
-    const updatedTask = await taskRepository.save(task);
-    delete updatedTask.deletedAt;
-    return updatedTask;
+  if (!task) {
+    return null;
   }
-  return null;
+  task.status = status;
+  const updatedTask = await taskRepository.save(task);
+  delete updatedTask.deletedAt;
+  return updatedTask;
+};
+
+const getDaysElapsed = async (id: number) => {
+  const task = await taskRepository.findOneBy({ id });
+  if (!task) {
+    return null;
+  }
+  return calculateDaysElapsed(task.createdAt);
 };
 
 export default {
@@ -87,4 +96,5 @@ export default {
   updateTask,
   deleteTask,
   changeTaskStatus,
+  getDaysElapsed,
 };

@@ -29,5 +29,10 @@ router.patch(
   validate({ params: getTaskByIdSchema, body: getTasksByStatusSchema }),
   tasksControlller.changeTaskStatus,
 );
+router.get(
+  '/:id/days-elapsed',
+  validate({ params: getTaskByIdSchema }),
+  tasksControlller.getDaysElapsed,
+);
 
 export default router;
