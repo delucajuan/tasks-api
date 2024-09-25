@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import tasksService from '../services/tasks';
 import { HttpError } from '../types/types';
+import { TaskStatus } from '../entities/Task';
 
 const createTask = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -36,4 +37,15 @@ const getTaskById = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default { createTask, getAllTasks, getTaskById };
+const getTasksByStatus = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { status } = req.params;
+    const taskStatus = status as TaskStatus;
+    const tasks = await tasksService.getTasksByStatus(taskStatus);
+    res.json(tasks);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createTask, getAllTasks, getTaskById, getTasksByStatus };

@@ -1,7 +1,6 @@
 import Joi from 'joi';
 import { TaskStatus } from '../entities/Task';
 
-// Validation schema for creating a task
 const createTaskSchema = Joi.object({
   title: Joi.string().min(1).max(255).required(),
   description: Joi.string().min(1).required(),
@@ -10,12 +9,16 @@ const createTaskSchema = Joi.object({
     .optional(),
 });
 
-// Validation schema for getting a task by id
 const getTaskByIdSchema = Joi.object({
   id: Joi.number().integer().positive().required(),
 });
 
-// Validation schema for updating a task
+const getTasksByStatusSchema = Joi.object({
+  status: Joi.string()
+    .valid(...Object.values(TaskStatus))
+    .required(),
+});
+
 const updateTaskSchema = Joi.object({
   title: Joi.string().min(1).max(255).optional(),
   description: Joi.string().min(1).optional(),
@@ -24,4 +27,4 @@ const updateTaskSchema = Joi.object({
     .optional(),
 }).or('title', 'description', 'status');
 
-export { createTaskSchema, getTaskByIdSchema, updateTaskSchema };
+export { createTaskSchema, getTaskByIdSchema, updateTaskSchema, getTasksByStatusSchema };

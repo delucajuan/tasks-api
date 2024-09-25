@@ -24,7 +24,6 @@ const validate =
     if (schemas.body) {
       const { error, value } = schemas.body.validate(req.body, options);
       if (error) {
-        // Map Joi errors into a single error message
         validationErrors.push(...error.details.map((detail) => detail.message));
       } else {
         req.body = value;
