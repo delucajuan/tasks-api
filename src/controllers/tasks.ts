@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import tasksService from '../services/tasks';
+import { HttpError } from '../types/types';
 
 const createTask = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -20,4 +21,19 @@ const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default { createTask, getAllTasks };
+const getTaskById = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = parseInt(req.params.id);
+    const task = await tasksService.getTaskById(id);
+    if (!task) {
+      const notFoundError: HttpError = new Error('Task Not Found');
+      notFoundError.status = 404;
+      throw notFoundError;
+    }
+    res.json(task);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createTask, getAllTasks, getTaskById };

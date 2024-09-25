@@ -2,9 +2,9 @@ import { AppDataSource } from '../data-source';
 import { Task } from '../entities/Task';
 import { CreateTaskInput } from '../types/types';
 
-const createTask = async ({ title, description, status }: CreateTaskInput) => {
-  const taskRepository = AppDataSource.getRepository(Task);
+const taskRepository = AppDataSource.getRepository(Task);
 
+const createTask = async ({ title, description, status }: CreateTaskInput) => {
   const task = taskRepository.create({
     title,
     description,
@@ -16,8 +16,11 @@ const createTask = async ({ title, description, status }: CreateTaskInput) => {
 };
 
 const getAllTasks = async () => {
-  const taskRepository = AppDataSource.getRepository(Task);
   return await taskRepository.find();
 };
 
-export default { createTask, getAllTasks };
+const getTaskById = async (id: number) => {
+  return await taskRepository.findOneBy({ id });
+};
+
+export default { createTask, getAllTasks, getTaskById };

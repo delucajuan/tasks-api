@@ -1,27 +1,45 @@
 import { Request, Response, NextFunction } from 'express';
-import { ObjectSchema } from 'joi';
-import { HttpError } from '../types/types';
+import { HttpError, ValidationSchemas } from '../types/types';
 
-const validate = (schema: ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
-  const options = {
-    abortEarly: false, // Include all errors
-    allowUnknown: true, // Allow unknown keys that are not defined in the schema
-    stripUnknown: true, // Remove unknown keys from the validated data
+const validate =
+  (schemas: ValidationSchemas) => (req: Request, res: Response, next: NextFunction) => {
+    const options = {
+      abortEarly: false, // Include all errors
+      allowUnknown: false, // Don't allow unknown keys that are not defined in the schema
+    };
+
+    const validationErrors = [];
+
+    // Validate request params
+    if (schemas.params) {
+      const { error, value } = schemas.params.validate(req.params, options);
+      if (error) {
+        validationErrors.push(...error.details.map((detail) => detail.message));
+      } else {
+        req.params = value;
+      }
+    }
+
+    // Validate request body
+    if (schemas.body) {
+      const { error, value } = schemas.body.validate(req.body, options);
+      if (error) {
+        // Map Joi errors into a single error message
+        validationErrors.push(...error.details.map((detail) => detail.message));
+      } else {
+        req.body = value;
+      }
+    }
+
+    // If there are any validation errors, respond with 400 Bad Request
+    if (validationErrors.length > 0) {
+      const error: HttpError = new Error('Bad request');
+      error.status = 400;
+      error.cause = validationErrors;
+      return next(error);
+    }
+
+    next();
   };
-
-  const { error: validationError, value } = schema.validate(req.body, options);
-
-  if (validationError) {
-    // Map Joi errors into a single error message
-    const errorMessage = validationError.details.map((detail) => detail.message).join(', ');
-    const error: HttpError = new Error(errorMessage);
-    error.status = 400;
-
-    return next(error);
-  }
-
-  req.body = value;
-  next();
-};
 
 export default validate;

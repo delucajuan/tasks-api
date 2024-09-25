@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { HttpError } from '../types/types';
+import { ErrorResponse, HttpError } from '../types/types';
 
 const errorHandler = (
   err: HttpError,
@@ -20,12 +20,16 @@ const errorHandler = (
     message = 'Invalid JSON payload';
   }
 
-  const errorResponse: { status: number; message: string; error?: unknown } = {
+  const errorResponse: ErrorResponse = {
     status,
     // No stacktraces leaked to user unless in development environment or status 400, 401, 404
     message:
       development || [400, 401, 404].includes(status ?? 0) ? message : 'Internal server error',
   };
+
+  if (err.status === 400 && err.cause) {
+    errorResponse.cause = err.cause;
+  }
 
   // Include error in development. Do not include it if only has status in it.
   if (development && Object.keys(err).length > 1) {
