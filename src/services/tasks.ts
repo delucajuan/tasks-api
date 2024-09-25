@@ -1,9 +1,17 @@
 import { AppDataSource } from '../data-source';
 import { Task } from '../entities/Task';
-import { CreateTaskInput } from '../types/types';
+import { CreateTaskInput, UpdateTaskInput } from '../types/types';
 import { TaskStatus } from '../entities/Task';
 
 const taskRepository = AppDataSource.getRepository(Task);
+const standarSelect = {
+  id: true,
+  title: true,
+  description: true,
+  status: true,
+  createdAt: true,
+  updatedAt: true,
+};
 
 const createTask = async ({ title, description, status }: CreateTaskInput) => {
   const task = taskRepository.create({
@@ -13,15 +21,33 @@ const createTask = async ({ title, description, status }: CreateTaskInput) => {
   });
 
   await taskRepository.save(task);
+  delete task.deletedAt;
   return task;
 };
 
 const getAllTasks = async () => {
-  return await taskRepository.find();
+  return await taskRepository.find({
+    select: standarSelect,
+  });
 };
 
 const getTaskById = async (id: number) => {
-  return await taskRepository.findOneBy({ id });
+  return await taskRepository.findOne({
+    select: standarSelect,
+    where: { id },
+  });
+};
+
+const updateTask = async ({ id, title, description }: UpdateTaskInput) => {
+  const task = await taskRepository.findOneBy({ id });
+  if (task) {
+    task.title = title ?? task.title;
+    task.description = description ?? task.description;
+    const updatedTask = await taskRepository.save(task);
+    delete updatedTask.deletedAt;
+    return updatedTask;
+  }
+  return null;
 };
 
 const deleteTask = async (id: number) => {
@@ -36,7 +62,10 @@ const deleteTask = async (id: number) => {
 };
 
 const getTasksByStatus = async (status: TaskStatus) => {
-  return await taskRepository.findBy({ status });
+  return await taskRepository.find({
+    select: standarSelect,
+    where: { status },
+  });
 };
 
-export default { createTask, getAllTasks, getTaskById, getTasksByStatus, deleteTask };
+export default { createTask, getAllTasks, getTaskById, getTasksByStatus, updateTask, deleteTask };

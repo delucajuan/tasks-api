@@ -37,6 +37,22 @@ const getTaskById = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const updateTask = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { title, description } = req.body;
+    const updatedTask = await tasksService.updateTask({ id, title, description });
+    if (!updatedTask) {
+      const notFoundError: HttpError = new Error('Task not found');
+      notFoundError.status = 404;
+      throw notFoundError;
+    }
+    res.json(updatedTask);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const deleteTask = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = parseInt(req.params.id);
@@ -63,4 +79,4 @@ const getTasksByStatus = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
-export default { createTask, getAllTasks, getTaskById, deleteTask, getTasksByStatus };
+export default { createTask, getAllTasks, getTaskById, updateTask, deleteTask, getTasksByStatus };
