@@ -1,6 +1,6 @@
 import { AppDataSource } from '../data-source';
 import { Task } from '../entities/Task';
-import { CreateTaskInput, UpdateTaskInput } from '../types/types';
+import { ChangeTaskStatusInput, CreateTaskInput, UpdateTaskInput } from '../types/types';
 import { TaskStatus } from '../entities/Task';
 
 const taskRepository = AppDataSource.getRepository(Task);
@@ -68,4 +68,23 @@ const getTasksByStatus = async (status: TaskStatus) => {
   });
 };
 
-export default { createTask, getAllTasks, getTaskById, getTasksByStatus, updateTask, deleteTask };
+const changeTaskStatus = async ({ id, status }: ChangeTaskStatusInput) => {
+  const task = await taskRepository.findOneBy({ id });
+  if (task) {
+    task.status = status;
+    const updatedTask = await taskRepository.save(task);
+    delete updatedTask.deletedAt;
+    return updatedTask;
+  }
+  return null;
+};
+
+export default {
+  createTask,
+  getAllTasks,
+  getTaskById,
+  getTasksByStatus,
+  updateTask,
+  deleteTask,
+  changeTaskStatus,
+};

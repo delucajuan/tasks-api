@@ -27,6 +27,11 @@ export type UpdateTaskInput = {
   description?: string;
 };
 
+export type ChangeTaskStatusInput = {
+  id: number;
+  status: TaskStatus;
+};
+
 export type ValidationSchemas = {
   body?: ObjectSchema;
   params?: ObjectSchema;

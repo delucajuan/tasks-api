@@ -9,7 +9,7 @@ const createTaskSchema = Joi.object({
     .optional(),
 });
 
-const idSchema = Joi.object({
+const getTaskByIdSchema = Joi.object({
   id: Joi.number().integer().positive().required(),
 });
 
@@ -24,4 +24,4 @@ const updateTaskSchema = Joi.object({
   description: Joi.string().min(1).optional(),
 }).or('title', 'description');
 
-export { createTaskSchema, idSchema, updateTaskSchema, getTasksByStatusSchema };
+export { createTaskSchema, getTaskByIdSchema, updateTaskSchema, getTasksByStatusSchema };

@@ -79,4 +79,28 @@ const getTasksByStatus = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
-export default { createTask, getAllTasks, getTaskById, updateTask, deleteTask, getTasksByStatus };
+const changeTaskStatus = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { status } = req.body;
+    const updatedTask = await tasksService.changeTaskStatus({ id, status });
+    if (!updatedTask) {
+      const notFoundError: HttpError = new Error('Task not found');
+      notFoundError.status = 404;
+      throw notFoundError;
+    }
+    res.json(updatedTask);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default {
+  createTask,
+  getAllTasks,
+  getTaskById,
+  updateTask,
+  deleteTask,
+  getTasksByStatus,
+  changeTaskStatus,
+};
