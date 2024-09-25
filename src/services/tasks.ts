@@ -24,8 +24,19 @@ const getTaskById = async (id: number) => {
   return await taskRepository.findOneBy({ id });
 };
 
+const deleteTask = async (id: number) => {
+  const task = await taskRepository.findOneBy({ id });
+  if (task) {
+    const result = await taskRepository.softDelete(id);
+    if (result.affected) {
+      return { status: 200, message: 'Task successfully deleted' };
+    }
+  }
+  return null;
+};
+
 const getTasksByStatus = async (status: TaskStatus) => {
   return await taskRepository.findBy({ status });
 };
 
-export default { createTask, getAllTasks, getTaskById, getTasksByStatus };
+export default { createTask, getAllTasks, getTaskById, getTasksByStatus, deleteTask };

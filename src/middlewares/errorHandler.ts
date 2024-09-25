@@ -37,10 +37,10 @@ const errorHandler = (
   }
 
   // Log if internal error
-  if (errorResponse.status === 500) {
+  if (status === 500) {
     console.error(err);
   }
-  res.status(errorResponse.status).json(errorResponse);
+  res.status(status).json(errorResponse);
 };
 
 export default errorHandler;

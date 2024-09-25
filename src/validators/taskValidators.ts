@@ -19,6 +19,10 @@ const getTasksByStatusSchema = Joi.object({
     .required(),
 });
 
+const deleteTaskSchema = Joi.object({
+  id: Joi.number().integer().positive().required(),
+});
+
 const updateTaskSchema = Joi.object({
   title: Joi.string().min(1).max(255).optional(),
   description: Joi.string().min(1).optional(),
@@ -27,4 +31,10 @@ const updateTaskSchema = Joi.object({
     .optional(),
 }).or('title', 'description', 'status');
 
-export { createTaskSchema, getTaskByIdSchema, updateTaskSchema, getTasksByStatusSchema };
+export {
+  createTaskSchema,
+  getTaskByIdSchema,
+  updateTaskSchema,
+  deleteTaskSchema,
+  getTasksByStatusSchema,
+};
