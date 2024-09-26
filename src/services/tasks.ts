@@ -5,6 +5,7 @@ import { TaskStatus } from '../entities/Task';
 import { calculateDaysElapsed } from '../utils/dateUtils';
 
 const taskRepository = AppDataSource.getRepository(Task);
+
 const standarSelect = {
   id: true,
   title: true,
@@ -50,6 +51,7 @@ const updateTask = async ({ id, title, description }: UpdateTaskInput) => {
   delete updatedTask.deletedAt;
   return updatedTask;
 };
+
 const deleteTask = async (id: number) => {
   const task = await taskRepository.findOneBy({ id });
   if (!task) {

@@ -15,5 +15,5 @@ EXPOSE 3000
 
 ENV NODE_ENV=development
 
-# Start the server
-CMD ["npm", "run", "dev"]
+# Start the server and run migrations when the container starts
+CMD ["sh", "-c", "npm run migration:run && npm run dev"]
