@@ -94,9 +94,9 @@ export default {
   createTask,
   getAllTasks,
   getTaskById,
-  getTasksByStatus,
   updateTask,
   deleteTask,
+  getTasksByStatus,
   changeTaskStatus,
   getDaysElapsed,
 };
