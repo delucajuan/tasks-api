@@ -8,10 +8,7 @@ const config: Config = {
   transform: {
     '^.+\\.ts$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
   },
-  collectCoverage: true,
-  collectCoverageFrom: [
-    'src/**/*.{js,ts}',
-  ],
+  collectCoverageFrom: ['src/**/*.{js,ts}'],
 };
 
 export default config;

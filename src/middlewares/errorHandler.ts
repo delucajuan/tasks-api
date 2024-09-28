@@ -8,7 +8,7 @@ const errorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction,
 ) => {
-  const development = process.env.NODE_ENV === 'developmente';
+  const development = process.env.NODE_ENV === 'development';
 
   // Default to 500 Internal Server Error
   let status = err.status ?? 500;

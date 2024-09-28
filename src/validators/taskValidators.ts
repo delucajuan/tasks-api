@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { TaskStatus } from '../entities/Task';
 
 const createTaskSchema = Joi.object({
-  title: Joi.string().min(1).max(255).required(),
+  title: Joi.string().min(1).required(),
   description: Joi.string().min(1).required(),
   status: Joi.string()
     .valid(...Object.values(TaskStatus))

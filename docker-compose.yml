@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:14
+    image: postgres
     container_name: database
     restart: unless-stopped
     environment:
@@ -15,7 +15,8 @@ services:
   api:
     container_name: server
     build: .
-    restart: always
+    init: true
+    restart: unless-stopped
     environment:
       - NODE_ENV=development
       - PORT=${PORT}
@@ -31,6 +32,19 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+    command: ['sh', '-c', 'npm run migration:run && npm run dev']
+
+  test:
+    container_name: test
+    build: .
+    environment:
+      - NODE_ENV=test
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ['npm', 'run', 'test']
+    profiles:
+      - test
 
 volumes:
   db-data:
