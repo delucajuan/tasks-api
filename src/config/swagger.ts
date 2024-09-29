@@ -22,11 +22,6 @@ const options: SwaggerOptions = {
         url: 'https://github.com/delucajuan',
       },
     },
-    servers: [
-      {
-        url: `http://localhost:${process.env.PORT || 3000}`,
-      },
-    ],
     components: {
       schemas: {
         // Task Schema

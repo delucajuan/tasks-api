@@ -1,5 +1,5 @@
 {
-  "name": "task-api",
+  "name": "tasks-api",
   "version": "1.0.0",
   "description": "A RESTful API for managing user tasks with CRUD functionality and filtering.",
   "main": "server.js",
@@ -7,22 +7,22 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "nodemon --watch src --exec ts-node src/server.ts",
-    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/data-source.ts",
-    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./src/data-source.ts",
-    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/data-source.ts",
+    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/config/data-source.ts",
+    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./src/config/data-source.ts",
+    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/config/data-source.ts",
     "test": "jest",
     "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/delucajuan/task-api.git"
+    "url": "git+https://github.com/delucajuan/tasks-api.git"
   },
   "author": "Juan De Luca",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/delucajuan/task-api/issues"
+    "url": "https://github.com/delucajuan/tasks-api/issues"
   },
-  "homepage": "https://github.com/delucajuan/task-api#readme",
+  "homepage": "https://github.com/delucajuan/tasks-api#readme",
   "devDependencies": {
     "@eslint/js": "^9.11.0",
     "@types/dotenv": "^6.1.1",

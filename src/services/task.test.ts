@@ -11,7 +11,7 @@ const mockRepository = {
 };
 
 // Mock AppDataSource
-jest.mock('../data-source', () => ({
+jest.mock('../config/data-source', () => ({
   AppDataSource: {
     getRepository: jest.fn().mockReturnValue(mockRepository),
   },

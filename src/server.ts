@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
-import { AppDataSource } from './data-source';
+import { AppDataSource } from './config/data-source';
 import routes from './routes';
 import errorHandler from './middlewares/errorHandler';
 import morgan from 'morgan';

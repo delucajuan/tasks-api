@@ -1,4 +1,4 @@
-import { AppDataSource } from '../data-source';
+import { AppDataSource } from '../config/data-source';
 import { Task } from '../entities/Task';
 import { ChangeTaskStatusInput, CreateTaskInput, UpdateTaskInput } from '../types/types';
 import { TaskStatus } from '../entities/Task';

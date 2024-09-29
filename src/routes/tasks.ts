@@ -12,13 +12,6 @@ const router = Router();
 
 /**
  * @swagger
- * tags:
- *   name: Tasks
- *   description: API for managing tasks
- */
-
-/**
- * @swagger
  * /api/tasks:
  *   post:
  *     summary: Create a new task
