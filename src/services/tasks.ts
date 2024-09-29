@@ -23,8 +23,17 @@ const createTask = async ({ title, description, status }: CreateTaskInput) => {
   });
 
   await taskRepository.save(task);
-  delete task.deletedAt;
-  return task;
+
+  const formattedTask = {
+    id: task.id,
+    title: task.title,
+    description: task.description,
+    status: task.status,
+    createdAt: task.createdAt,
+    updatedAt: task.updatedAt,
+  };
+
+  return formattedTask;
 };
 
 const getAllTasks = async () => {

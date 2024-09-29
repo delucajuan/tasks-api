@@ -31,11 +31,6 @@ const errorHandler = (
     errorResponse.cause = err.cause;
   }
 
-  // Include error in development. Do not include it if only has status in it.
-  if (development && Object.keys(err).length > 1) {
-    errorResponse.error = err;
-  }
-
   // Log if internal error
   if (status === 500) {
     console.error(err);
