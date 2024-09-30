@@ -68,7 +68,7 @@ Ensure that Docker is installed and running on your system. You can download Doc
    docker-compose up
    ```
 
-4. The API will be accessible at [http://localhost:3000/api/](http://localhost:3000/api/) and the documentation at [http://localhost:3000/api-docs/](http://localhost:3000/api-docs/). If a different port is set in the `.env` file, replace 3000 with the configured port.
+4. The API will be reachable at [http://localhost:3000/api/](http://localhost:3000/api/) and the documentation at [http://localhost:3000/api-docs/](http://localhost:3000/api-docs/). If a different port is set in the `.env` file, replace 3000 with the configured port.
 
 ## Testing
 
