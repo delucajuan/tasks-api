@@ -10,7 +10,7 @@ const options: SwaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Task API',
+      title: 'Tasks API',
       version: '1.0.0',
       description: 'API for managing tasks',
       license: {
